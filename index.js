@@ -8,6 +8,7 @@ app.use(express.static('assets'))
 app.get('/',function(req,res){
   res.sendFile(__dirname+'/index.html')
 })
+app.set('port',process.env.PORT || 5000)
 
 var user = 0
 var msg = []
@@ -26,4 +27,4 @@ io.on('connection',function(socket){
 })
 
 
-http.listen('3000',function(){console.log('listening on port 3000')})
+http.listen(app.get('port'),function(){console.log('listening on port 3000')})
