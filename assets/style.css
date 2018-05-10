@@ -11,11 +11,140 @@ body{
   display: flex;
   min-height: 100vh;
   justify-content: center;
-  align-items: center
+  align-items: center;
+  background-color: #F9FBE7;
+  font-family: 'Roboto', sans-serif
 }
 .text-center{
   text-align: center
 }
+#root{
+  max-width: 100vh;
+  width: 700px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.1);
+  background-color: white;
+  padding: 20px;
+  flex-flow: column wrap;
+  min-height: 600px;
+  justify-content: space-between
+}
+.title{
+  margin-bottom: 20px
+}
 .title h1{
-  
+  font-weight: 700;
+  color: #558B2F;
+  font-size: 25px
+}
+.title p{
+  margin-top: 5px;
+  color: #333;
+  font-size: 18px
+}
+.flex-wrap{
+  display: flex
+}
+.chat-wrapper{
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 400px;
+  margin-bottom: 10px
+}
+.form-control{
+  flex: 1;
+  resize: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  outline: none;
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+  transition: .3s
+}
+.form-control:hover{
+  border-color: #8BC34A;
+  box-shadow: 0 2px 2px rgba(0,0,0,.1)
+}
+.btn{
+  padding: 0 40px;
+  background-color: #558B2F;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  font-size: 14px
+}
+ul li{
+  list-style: none;
+}
+ul{
+  padding: 0;
+  height: 100%;
+}
+li span{
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #827717;
+  display: inline-block;
+  margin-bottom: 5px;
+  color: #eee;
+  line-height: 25px;
+  margin-right: 10px;
+  white-space: pre;
+  max-width: 100%;
+  text-overflow: ellipsis
+}
+li.me{
+  text-align: right
+}
+li.me span{
+  background-color: #43A047;
+}
+.count{
+  margin-top: 10px;
+  color: #777;
+  font-size: 14px
+}
+.chattrans-enter,
+.chattrans-leave{
+  opacity: 0;
+  transform: translateY(30px)
+}
+.chattrans-enter-to,
+.chattrans-leave-to{
+  opacity: 1;
+  transform: translateY(0)
+}
+.chattrans-move{
+  transition: .3s
+}
+.helper{
+  position: absolute;
+  bottom: 120%;
+  width: 100%;
+  background-color: #E6EE9C;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: .3s
+}
+.helper::after{
+  content: '';
+  border: 10px solid transparent;
+  border-top-color: #E6EE9C;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%)
+}
+.form{
+  position: relative;
+}
+.fade-enter,.fade-leave{
+  opacity: 0;
+}
+.fade-enter-active{
+  opacity: 1;
+  transition: all .3s ease;
 }

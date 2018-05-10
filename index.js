@@ -15,13 +15,15 @@ var msg = []
 
 io.on('connection',function(socket){
   user++
-  console.log('+1 user connected, total:'+user)
+  io.emit('userConnect',user)
+  console.log('+1 connected')
   socket.on('disconnect', function (socket) {
     user--
+    console.log('-1 connected')
+    io.emit('userConnect',user)
   })
   socket.on('addMsg',function(data){
     msg.push(data)
-    console.log('New Message : '+data.msg)
     io.emit('addMsg',data)
   })
 })

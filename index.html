@@ -1,51 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Real Time Chat App With Vue.js + Socket.io</title>
+  <!-- <link rel="stylesheet" href="assets/style.css"> -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.socket.io/socket.io-1.4.4.js"></script>
   <script src="vue.js"></script>
+  <!-- <script src="assets/vue.js"></script> -->
 </head>
+
 <body>
-  <div id="root">
+  <div id="root" class="flex-wrap">
     <div class="text-center title">
       <h1>Real Time Chat App</h1>
       <p>With Vue.js + Socket.io</p>
     </div>
     <div class="chat-wrapper">
-      <ul class="list-chat">
-        <li v-for="list in msgList">{{list.msg}}</li>
-      </ul>
+      <transition-group class="list-chat" name="chattrans" tag="ul">
+        <li :key="list.time" v-for="(list,idx) in msgList" :class="{'me':token===list.id}" ><span>{{list.msg}}</span></li>
+      </transition-group>
     </div>
-    <form id="msg-form" @submit.prevent="">
-      <textarea id="msg-box" @click.ctrl.enter="kirim" v-model="msg"></textarea>
+    <form id="msg-form" @submit.prevent="" class="flex-wrap form">
+      <transition appear name="fade">
+        <div class="helper" v-if="read">Start Chatting</div>
+      </transition>
+      <textarea autofocus tabindex="1" id="msg-box" @keyup.ctrl.enter="kirim" v-model="msg" class="form-control"></textarea>
       <button class="btn btn-primary" @click="kirim">Kirim</button>
     </form>
+    <p class="count">User(s) online : {{online}}</p>
   </div>
   <script>
-    var socket = io('/')
+    var socket = io('localhost:5000')
     new Vue({
-      el:'#root',
-      data:{
-        msg:null,
-        msgList:[]
+      el: '#root',
+      data: {
+        msg: null,
+        online:0,
+        msgList: [],
+        read:true
       },
-      methods:{
-        kirim:function(){
-          socket.emit('addMsg', {msg:this.msg})
-          this.msg=null
+      watch:{
+        msg:function(val){
+          this.read=false
         }
       },
-      mounted:function(){
+      methods: {
+        kirim: function () {
+          if(!this.msg) return
+          var data = {
+            id:this.token,
+            time:new Date().getTime(),
+            msg:this.msg
+          }
+          socket.emit('addMsg', data)
+          this.msg = null
+        }
+      },
+      computed:{
+        token: function(){
+          return localStorage.getItem('chat-power')
+        }
+      },
+      mounted: function () {
         var vm = this
         socket.on('addMsg', function (data) {
           vm.msgList.push(data)
         })
+        socket.on('userConnect',function(res){
+          vm.online=res
+        })
+      },
+      beforeCreate:function(){
+        localStorage.setItem('chat-power',new Date().getTime())
       }
     })
   </script>
 </body>
+
 </html>
