@@ -8,6 +8,7 @@ app.use(express.static('assets'))
 app.get('/',function(req,res){
   res.sendFile(__dirname+'/index.html')
 })
+// app.set('port',3000)
 app.set('port',process.env.PORT || 5000)
 
 var user = 0

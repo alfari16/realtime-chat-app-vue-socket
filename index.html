@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Real Time Chat App With Vue.js + Socket.io</title>
-  <!-- <link rel="stylesheet" href="assets/style.css"> -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.socket.io/socket.io-1.4.4.js"></script>
+  <link rel="stylesheet" href="style.css">
   <script src="vue.min.js"></script>
+  <!-- <link rel="stylesheet" href="assets/style.css"> -->
   <!-- <script src="assets/vue.js"></script> -->
 </head>
 
@@ -20,9 +20,9 @@
       <h1>Real Time Chat App</h1>
       <p>With Vue.js + Socket.io</p>
     </div>
-    <div class="chat-wrapper">
-      <transition-group class="list-chat" name="chattrans" tag="ul">
-        <li :key="list.time" v-for="(list,idx) in msgList" :class="{'me':token===list.id}" ><span>{{list.msg}}</span></li>
+    <div class="chat-wrapper" ref="chatWrapper">
+      <transition-group name="list-complete" tag="ul">
+        <li :key="idx" v-for="(list,idx) in msgList" :class="{'me':token===list.id}" ><span>{{list.msg}}</span></li>
       </transition-group>
     </div>
     <form id="msg-form" @submit.prevent="" class="flex-wrap form">
@@ -35,6 +35,7 @@
     <p class="count">User(s) online : {{online}}</p>
   </div>
   <script>
+    // var socket = io('localhost:3000')
     var socket = io('/')
     new Vue({
       el: '#root',
@@ -54,12 +55,18 @@
           if(!this.msg) return
           var data = {
             id:this.token,
-            time:new Date().getTime(),
             msg:this.msg
           }
           socket.emit('addMsg', data)
+          setTimeout(() => {
+            this.$refs.chatWrapper.scrollTo({
+              behavior:'smooth',
+              left: 0,
+              top: this.$refs.chatWrapper.scrollHeight + 900
+            })
+          }, 500);
           this.msg = null
-        }
+        },
       },
       computed:{
         token: function(){

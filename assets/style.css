@@ -75,6 +75,7 @@ body{
 }
 ul li{
   list-style: none;
+  word-wrap: break-word;
 }
 ul{
   padding: 0;
@@ -91,7 +92,7 @@ li span{
   margin-right: 10px;
   white-space: pre;
   max-width: 100%;
-  text-overflow: ellipsis
+  word-wrap: break-word;
 }
 li.me{
   text-align: right
@@ -105,14 +106,9 @@ li.me span{
   font-size: 14px
 }
 .chattrans-enter,
-.chattrans-leave{
+.chattrans-leave-to{
   opacity: 0;
   transform: translateY(30px)
-}
-.chattrans-enter-to,
-.chattrans-leave-to{
-  opacity: 1;
-  transform: translateY(0)
 }
 .chattrans-move{
   transition: .3s
@@ -141,10 +137,26 @@ li.me span{
 .form{
   position: relative;
 }
-.fade-enter,.fade-leave{
+.fade-enter,.fade-leave-to{
   opacity: 0;
 }
-.fade-enter-active{
-  opacity: 1;
+.fade-enter-active,
+.fade-leave-active{
   transition: all .3s ease;
+}
+
+
+
+.list-complete-item {
+  transition: all 1s;
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-complete-enter, .list-complete-leave-to{
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-complete-leave-active,
+.list-complete-enter-active {
+  transition: all .3s ease-in-out
 }
